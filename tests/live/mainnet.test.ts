@@ -78,6 +78,67 @@ describe('live: usdg', () => {
   })
 })
 
+describe('live: usdg facet surface', () => {
+  /**
+   * USDG is a facet/diamond token, so reading the Blockscout-verified
+   * implementation ABI understates what the token actually supports. The SDK
+   * previously documented "no EIP-2612 permit" on that basis, which is wrong.
+   * These assertions pin the real surface against the router.
+   */
+  const getFacetAbi = [
+    {
+      type: 'function',
+      name: 'getFacet',
+      stateMutability: 'view',
+      inputs: [{ type: 'bytes4' }],
+      outputs: [{ type: 'address' }],
+    },
+  ] as const
+
+  const ZERO = '0x0000000000000000000000000000000000000000'
+
+  const facetOf = (selector: `0x${string}`) =>
+    hood.public.readContract({
+      address: MAINNET_ADDRESSES.usdg,
+      abi: getFacetAbi,
+      functionName: 'getFacet',
+      args: [selector],
+    })
+
+  it('registers a facet for an unknown selector as the zero address', async () => {
+    // Negative control: without this, "everything is registered" would pass.
+    expect(await facetOf('0xdeadbeef')).toBe(ZERO)
+  })
+
+  it('registers EIP-2612 permit and nonces', async () => {
+    expect(await facetOf('0xd505accf')).not.toBe(ZERO) // permit
+    expect(await facetOf('0x7ecebe00')).not.toBe(ZERO) // nonces
+  })
+
+  it('registers EIP-3009 transferWithAuthorization', async () => {
+    expect(await facetOf('0xe3ee160e')).not.toBe(ZERO)
+  })
+
+  it('answers nonces(address) rather than reverting', async () => {
+    // Registration alone does not prove the facet is wired. A real call does.
+    const nonce = await hood.public.readContract({
+      address: MAINNET_ADDRESSES.usdg,
+      abi: [
+        {
+          type: 'function',
+          name: 'nonces',
+          stateMutability: 'view',
+          inputs: [{ type: 'address' }],
+          outputs: [{ type: 'uint256' }],
+        },
+      ] as const,
+      functionName: 'nonces',
+      args: [MAINNET_ADDRESSES.multicall3],
+    })
+    expect(nonce).toBeGreaterThanOrEqual(0n)
+  })
+})
+
 describe('live: swap quoting', () => {
   it('quotes 100 USDG → WETH through the canonical QuoterV2', async () => {
     const quote = await quoteSwap(hood, {

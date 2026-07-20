@@ -10,9 +10,25 @@ import { NoAccountError } from './errors.js'
  * Facts verified on Blockscout during SDK development:
  * - Mainnet address `0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168` (ERC-1967
  *   proxy onto Paxos' verified `USDG` implementation), **6 decimals**.
- * - USDG does **not** implement EIP-2612 `permit` — the verified
- *   implementation ABI has no `permit`, `nonces`, or EIP-2612 surface, so
- *   gasless approvals are not possible; use a normal `approve`.
+ * - USDG **does** implement EIP-2612 `permit`, despite the Blockscout-verified
+ *   implementation ABI showing no `permit`/`nonces`. USDG is a facet/diamond
+ *   token: reading the implementation alone understates its surface. Probing
+ *   the router directly on mainnet settles it, with a nonsense selector as a
+ *   negative control to prove the check discriminates:
+ *
+ *   ```
+ *   getFacet(0xd505accf) permit   -> 0x780d30b6a89BC9Eef953a543aA288c3B05b01309
+ *   getFacet(0x7ecebe00) nonces   -> 0x780d30b6a89BC9Eef953a543aA288c3B05b01309
+ *   getFacet(0xe3ee160e) transfer -> 0x780d30b6a89BC9Eef953a543aA288c3B05b01309
+ *   getFacet(0xdeadbeef) control  -> 0x0000000000000000000000000000000000000000
+ *   ```
+ *
+ *   `nonces(address)` answers with a value rather than reverting, confirming
+ *   the facet is live and not merely registered. Gasless approvals ARE
+ *   possible. For moving USDG, prefer EIP-3009 `transferWithAuthorization`
+ *   anyway: `permit` authorizes an allowance rather than a transfer, needs a
+ *   second call to collect, leaves a standing allowance behind, and binds
+ *   neither the recipient nor the exact amount into the signature.
  */
 
 /** USDG contract address for the client's network. */
@@ -67,8 +83,9 @@ export async function transferUsdg(client: HoodClient, to: Address, amount: bigi
 /**
  * Approve `spender` for `amount` USDG. Requires a wallet account.
  *
- * USDG has no EIP-2612 `permit` (verified on the Blockscout-verified
- * implementation), so on-chain `approve` is the only allowance mechanism.
+ * This is the on-chain allowance path, which costs the owner gas. USDG also
+ * exposes EIP-2612 `permit` through its facet router (see the module header),
+ * so a signed allowance is possible when the owner cannot pay gas.
  */
 export async function approveUsdg(client: HoodClient, spender: Address, amount: bigint): Promise<Hash> {
   if (!client.wallet) throw new NoAccountError('approveUsdg')
