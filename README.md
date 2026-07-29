@@ -24,7 +24,7 @@ Docs: **https://nirholas.github.io/robinhood-chain-sdk/** · API reference: `/ap
 npm install hoodchain viem
 ```
 
-Node ≥ 20. Until the package is on npm, install from a checkout: `npm i ../robinhood-chain-sdk`.
+Node ≥ 20. `viem` is a peer dependency, so install it alongside the SDK. To work against a local checkout instead, use `npm i ../robinhood-chain-sdk`.
 
 ## Quickstart
 
