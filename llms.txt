@@ -1,0 +1,28 @@
+# robinhood-chain-sdk
+
+> TypeScript SDK for Robinhood Chain: Stock Tokens, Chainlink quotes, multiplier-correct portfolios, Uniswap v3 swaps, USDG, launchpad watchers, and the sequencer firehose. hoodchain.
+
+robinhood-chain-sdk is an open-source repository by nirholas, part of the three.ws ecosystem.
+
+## Docs
+
+- [README](https://github.com/nirholas/robinhood-chain-sdk/blob/HEAD/README.md): install, usage and reference
+- [Install](https://github.com/nirholas/robinhood-chain-sdk/blob/HEAD/README.md#install)
+- [Quickstart](https://github.com/nirholas/robinhood-chain-sdk/blob/HEAD/README.md#quickstart)
+- [Modules](https://github.com/nirholas/robinhood-chain-sdk/blob/HEAD/README.md#modules)
+- [The registry](https://github.com/nirholas/robinhood-chain-sdk/blob/HEAD/README.md#the-registry)
+- [Examples](https://github.com/nirholas/robinhood-chain-sdk/blob/HEAD/README.md#examples)
+- [Testing](https://github.com/nirholas/robinhood-chain-sdk/blob/HEAD/README.md#testing)
+- [Docs site (GitHub Pages)](https://github.com/nirholas/robinhood-chain-sdk/blob/HEAD/README.md#docs-site-github-pages)
+- [Publishing (maintainers)](https://github.com/nirholas/robinhood-chain-sdk/blob/HEAD/README.md#publishing-maintainers)
+- [AGENTS.md](https://github.com/nirholas/robinhood-chain-sdk/blob/HEAD/AGENTS.md): guidance for coding agents
+- [Full text for LLMs](https://github.com/nirholas/robinhood-chain-sdk/blob/HEAD/llms-full.txt): the README inlined
+
+## Project
+
+- [Source](https://github.com/nirholas/robinhood-chain-sdk)
+- [Issues](https://github.com/nirholas/robinhood-chain-sdk/issues)
+- [Discussions](https://github.com/nirholas/robinhood-chain-sdk/discussions)
+- [Homepage](https://nirholas.github.io/robinhood-chain-sdk/)
+- [three.ws](https://three.ws): the platform this is part of
+- [All repositories by nirholas](https://github.com/nirholas/nirholas#readme)
