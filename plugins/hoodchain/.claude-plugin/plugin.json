@@ -1,0 +1,17 @@
+{
+  "name": "hoodchain",
+  "version": "0.1.1",
+  "description": "TypeScript SDK for Robinhood Chain: Stock Token quotes, portfolios, Uniswap v3 swaps, USDG and launchpad watchers.",
+  "author": {
+    "name": "nirholas"
+  },
+  "repository": "https://github.com/nirholas/robinhood-chain-sdk",
+  "homepage": "https://nirholas.github.io/robinhood-chain-sdk/",
+  "keywords": [
+    "robinhood-chain",
+    "sdk",
+    "stock-tokens",
+    "uniswap",
+    "usdg"
+  ]
+}

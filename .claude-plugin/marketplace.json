@@ -1,0 +1,21 @@
+{
+  "name": "robinhood-chain-sdk",
+  "owner": {
+    "name": "nirholas"
+  },
+  "description": "TypeScript SDK for Robinhood Chain: Stock Token quotes, portfolios, Uniswap v3 swaps, USDG and launchpad watchers.",
+  "plugins": [
+    {
+      "name": "hoodchain",
+      "source": "./plugins/hoodchain",
+      "description": "TypeScript SDK for Robinhood Chain: Stock Token quotes, portfolios, Uniswap v3 swaps, USDG and launchpad watchers.",
+      "category": "development",
+      "tags": [
+        "robinhood-chain",
+        "sdk",
+        "typescript",
+        "viem"
+      ]
+    }
+  ]
+}
